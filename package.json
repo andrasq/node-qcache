@@ -1,0 +1,32 @@
+{
+  "name": "qcache",
+  "version": "0.1.0",
+  "description": "some basic caches",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andrasq/node-qcache"
+  },
+  "main": "index.js",
+  "author": {
+    "name": "Andras",
+    "url": "http://github.com/andrasq"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "nodeunit"
+  },
+  "keywords": [
+    "Andras",
+    "quick",
+    "cache",
+    "timeout"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "nodeunit": "*"
+  }
+}
