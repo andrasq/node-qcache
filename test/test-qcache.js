@@ -9,7 +9,7 @@ var qcache = require('../index.js');
 
 module.exports = {
     setUp: function(done) {
-        this.cache = new qcache.TimeoutCache({ttl: 5});
+        this.cache = new qcache.TtlCache({ttl: 5});
         this.uniqid = function() { return Math.random() * 0x1000000 | 0 };
         done();
     },
@@ -19,9 +19,9 @@ module.exports = {
         t.done();
     },
 
-    'TimeoutCache': {
+    'TtlCache': {
         'unset value should return undefined': function(t) {
-            t.equal(this.cache.get("key"), undefined);
+            t.equal(this.cache.get("notset"), undefined);
             t.done();
         },
 
@@ -38,7 +38,16 @@ module.exports = {
             t.done();
         },
 
-        'should time out value': function(t) {
+        'should impose capacity': function(t) {
+            var cache = new qcache.TtlCache({capacity: 1});
+            cache.set("v1", 1);
+            cache.set("v2", 2);
+            t.equal(cache.get("v1"), undefined);
+            t.equal(cache.get("v2"), 2);
+            t.done();
+        },
+
+        'should impose timeout': function(t) {
             var cache = this.cache;
             t.expect(2);
             this.cache.set("t", 1);
@@ -52,7 +61,7 @@ module.exports = {
         },
 
         'should honor configured timeout': function(t) {
-            var cache = new qcache.TimeoutCache({ttl: 2});
+            var cache = new qcache.TtlCache({ttl: 2});
             cache.set("t", 1);
             setTimeout(function() {
                 t.equal(cache.get("t"), undefined);

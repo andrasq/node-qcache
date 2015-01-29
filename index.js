@@ -1,1 +1,1 @@
-module.exports = require('./qcache.js');
+module.exports = require('./lib/qcache.js');
