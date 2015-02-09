@@ -5,21 +5,22 @@
 
 'use strict';
 
-var qcache = require('../index.js');
+var TtlCache = require('../ttlcache');
 
 module.exports = {
     setUp: function(done) {
-        this.cache = new qcache.TtlCache({ttl: 5});
+        this.cache = new TtlCache({ttl: 5});
         this.uniqid = function() { return Math.random() * 0x1000000 | 0 };
         done();
     },
 
-    'should parse package.json': function(t) {
-        var json = require('../package.json');
-        t.done();
-    },
-
     'TtlCache': {
+        'index should export TtlCache': function(t) {
+            var qcache = require('../index');
+            t.ok(new qcache() instanceof TtlCache);
+            t.done();
+        },
+
         'unset value should return undefined': function(t) {
             t.equal(this.cache.get("notset"), undefined);
             t.done();
@@ -39,7 +40,7 @@ module.exports = {
         },
 
         'should impose capacity': function(t) {
-            var cache = new qcache.TtlCache({capacity: 1});
+            var cache = new TtlCache({capacity: 1});
             cache.set("v1", 1);
             cache.set("v2", 2);
             t.equal(cache.get("v1"), undefined);
@@ -61,12 +62,12 @@ module.exports = {
         },
 
         'should honor configured timeout': function(t) {
-            var cache = new qcache.TtlCache({ttl: 2});
+            var cache = new TtlCache({ttl: 2});
             cache.set("t", 1);
             setTimeout(function() {
                 t.equal(cache.get("t"), undefined);
                 t.done();
-            }, 3);
+            }, 4);
         },
 
         'should delete value': function(t) {
