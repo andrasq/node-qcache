@@ -134,11 +134,17 @@ test whether there are any values stored under key
 Change Log
 ----------
 
+0.3.1
+
+- switch to an adaptive timebase for timestamps
+
 0.3.0
+
 - LruCache
 - MultiValueCache
 
 0.2.0
+
 - TtlCache
 
 
