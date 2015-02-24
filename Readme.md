@@ -134,7 +134,7 @@ test whether there are any values stored under key
 Change Log
 ----------
 
-0.3.1
+0.3.2
 
 - switch to an adaptive timebase for timestamps
 
