@@ -36,25 +36,27 @@ Key-value store with a time-to-live (ttl) timeout limit.
 
 ### new (require('qcache/ttlcache'))( options )
 
+        var ttlCache = require('qcache/ttlcache');
+        var cache = new TtlCache();
+
 Options:
 
-`ttl` - milliseconds before the stored value expires (default 1 year)
-
-`capacity` - the most items to cache at any time (default 10,000)
-
-`currentTimestamp` - function that returns a millisecond timestamp
+- `ttl` - milliseconds before the stored value expires (default 1 year)
+- `capacity` - the most items to cache at any time (default 10,000)
+- `currentTimestamp` - function that returns a millisecond timestamp
 (default is a built-in timeout timer)
 
 Properties:
 
-- `ttl` : the configured ttl
-- `capacity` : the configured capacity
-- `count` : number of items currently stored.  Read-only; do not write this value.
+- `ttlCache.ttl` - the configured ttl
+- `ttlCache.capacity` - the configured capacity
+- `ttlCache.count` - number of items currently stored.  Read-only; do not write this value.
 
 ### get( key )
 
-return the value stored under key.  Missing keys and expired contents
-read as undefined.
+return the value stored under key.  Missing keys and expired contents read as
+undefined.  An item expires when the current timestamp exceeds the item
+ttl (time-to-live) value.
 
 ### set( key, value )
 
@@ -64,8 +66,11 @@ discarded to make room.
 
 ### delete( key )
 
-remove the value from the cache
+remove the value from the cache.  Removed items read as undefined.
 
+### gc( )
+
+remove expired elements from the cache to free the occupied storage space
 
 LruCache
 --------
@@ -133,6 +138,11 @@ test whether there are any values stored under key
 
 Change Log
 ----------
+
+0.3.3
+
+- added ttl cache gc() method
+- consider an item that expires this ms as still live
 
 0.3.2
 

@@ -9,7 +9,7 @@ var TtlCache = require('../ttlcache');
 
 module.exports = {
     setUp: function(done) {
-        this.cache = new TtlCache({ttl: 5});
+        this.cache = new TtlCache({ttl: 10});
         this.uniqid = function() { return Math.random() * 0x1000000 | 0 };
         done();
     },
@@ -58,7 +58,7 @@ module.exports = {
             setTimeout(function() {
                 t.equal(cache.get("t"), undefined);
                 t.done();
-            }, 6);
+            }, 13);
         },
 
         'should honor configured timeout': function(t) {
@@ -76,6 +76,26 @@ module.exports = {
             this.cache.delete("t");
             t.equal(this.cache.get("t"), undefined);
             t.done();
+        },
+
+        'gc should purge timed out items': function(t) {
+            var cache = this.cache;
+            cache.set("t1", 1);
+            // NOTE: this test is timing sensitive.  Do not console.log
+            // during the run, because it can add 3-5 ms and break the test
+            setTimeout(function() {
+                cache.set("t2", 2);
+            }, 5);
+            setTimeout(function() {
+                var countBefore = cache.count;
+                cache.gc();
+                var t2value = cache.get("t2");
+                var countAfter = cache.count;
+                t.equal(countBefore, 2);
+                t.equal(t2value, 2);
+                t.equal(countAfter, 1);
+                t.done();
+            }, 12);
         },
 
         'test 200k set/get calls': function(t) {
