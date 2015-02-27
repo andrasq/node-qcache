@@ -139,6 +139,10 @@ test whether there are any values stored under key
 Change Log
 ----------
 
+0.3.4
+
+- make timebase track current time even during blocking burst fetches
+
 0.3.3
 
 - added ttl cache gc() method

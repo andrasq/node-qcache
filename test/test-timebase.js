@@ -82,4 +82,12 @@ module.exports = {
             t.done();
         }, 20);
     },
+
+    'should track time during blocking burst fetches': function(t) {
+        var t1 = getTimestamp();
+        for (var i=0; i<500000; i++) getTimestamp();
+        var t2 = getTimestamp();
+        t.ok(t2 > t1);
+        t.done();
+    },
 };
