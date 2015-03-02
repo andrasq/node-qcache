@@ -39,6 +39,15 @@ module.exports = {
             t.done();
         },
 
+        'should set and get falsy values': function(t) {
+            var values = [0, "", null, false];
+            for (var i in values) {
+                this.cache.set("t", values[i]);
+                t.strictEqual(this.cache.get("t"), values[i]);
+            }
+            t.done();
+        },
+
         'should impose capacity': function(t) {
             var cache = new TtlCache({capacity: 1});
             cache.set("v1", 1);
