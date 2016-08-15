@@ -135,6 +135,9 @@ return the newest value stored under key
 
 test whether there are any values stored under key
 
+### getLength( key )
+
+return the count of items stored under `key`
 
 Change Log
 ----------
