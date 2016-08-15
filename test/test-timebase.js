@@ -84,9 +84,9 @@ module.exports = {
     },
 
     'should track time during blocking burst fetches': function(t) {
-        var t1 = getTimestamp();
-        for (var i=0; i<500000; i++) getTimestamp();
-        var t2 = getTimestamp();
+        var t1 = getTimestamp(), t2;
+        for (var i=0; i<5000000; i++) t2 = getTimestamp();
+        // console.log("AR: 5m timestamps in %d ms", t2 - t1);
         t.ok(t2 > t1);
         t.done();
     },

@@ -1,6 +1,6 @@
 {
   "name": "qcache",
-  "version": "0.3.5-dev",
+  "version": "0.3.6",
   "description": "some basic caches",
   "license": "Apache-2.0",
   "repository": {
@@ -16,7 +16,7 @@
     "node": "*"
   },
   "scripts": {
-    "test": "nodeunit"
+    "test": "qnit"
   },
   "keywords": [
     "Andras",
@@ -27,6 +27,6 @@
   "dependencies": {
   },
   "devDependencies": {
-    "nodeunit": "0.9.0"
+    "qnit": "0.12.0"
   }
 }
