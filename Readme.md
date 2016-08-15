@@ -141,7 +141,8 @@ Change Log
 
 0.3.6
 
-- track timestamps more closely
+- timebase: track timestamps more closely
+- mvcache: getLength method
 - test with qnit
 
 0.3.4

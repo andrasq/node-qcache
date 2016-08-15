@@ -99,6 +99,14 @@ module.exports = {
             t.done();
         },
 
+        'should return list length': function(t) {
+            this.cache.push("t", 1);
+            this.cache.push("t", 2);
+            t.equal(this.cache.getLength("t"), 2);
+            t.equal(this.cache.getLength("x"), 0);
+            t.done();
+        },
+
         'test 100k set/get calls': function(t) {
             //this.cache.push("t", 0);
             var t1 = Date.now();
