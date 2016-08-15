@@ -139,6 +139,11 @@ test whether there are any values stored under key
 Change Log
 ----------
 
+0.3.6
+
+- track timestamps more closely
+- test with qnit
+
 0.3.4
 
 - make timebase track current time even during blocking burst fetches

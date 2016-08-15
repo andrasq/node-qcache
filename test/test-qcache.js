@@ -107,12 +107,23 @@ module.exports = {
             }, 12);
         },
 
-        'test 200k set/get calls': function(t) {
+        'time 200k set/get calls': function(t) {
             var t1 = Date.now();
             for (var i=0; i<200000; i++) { this.cache.set("t", 1); this.cache.get("t"); }
             var t2 = Date.now();
             // console.log("AR: 100k set/get in ms", t2-t1);
             // > 20+m/s
+            t.done();
+        },
+
+        'time 20k gc calls': function(t) {
+            for (var i=0; i<20; i++) this.cache.set("t"+i, 1);
+            for (var i=0; i<20; i+=2) this.cache.delete("t"+i);
+            var t1 = Date.now();
+            for (var i=0; i<20000; i++) this.cache.gc();
+            var t2 = Date.now();
+            // console.log("AR: 20k set/get in ms", t2-t1);
+            // 86k/s 100 items, 1.5m/s 10 items
             t.done();
         },
     },
