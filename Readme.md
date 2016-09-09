@@ -34,9 +34,20 @@ TtlCache
 
 Key-value store with a time-to-live (ttl) timeout limit.
 
-### new (require('qcache/ttlcache'))( options )
+## Benchmark
 
-        var ttlCache = require('qcache/ttlcache');
+    $ node benchmark.js
+
+    node=6.2.2 arch=ia32 mhz=3500 cpu="AMD Phenom(tm) II X4 B55 Processor" up_threshold=11
+    name  speed  (stats)  rate
+    qcache  1,582,436 ops/sec (29 runs of 10 calls in 1.833 out of 2.368 sec, +/- 0%) 1000
+    node_cache  249,289 ops/sec (5 runs of 10 calls in 2.006 out of 2.381 sec, +/- 0%) 158
+    memory_cache  859,635 ops/sec (16 runs of 10 calls in 1.861 out of 2.110 sec, +/- 0%) 543
+    lru_cache  467,421 ops/sec (9 runs of 10 calls in 1.925 out of 2.246 sec, +/- 0%) 295
+
+### new TtlCache( options )
+
+        var TtlCache = require('qcache/ttlcache');
         var cache = new TtlCache();
 
 Options:
@@ -142,33 +153,13 @@ return the count of items stored under `key`
 Change Log
 ----------
 
-0.3.6
-
-- timebase: track timestamps more closely
-- mvcache: getLength method
-- test with qnit
-
-0.3.4
-
-- make timebase track current time even during blocking burst fetches
-
-0.3.3
-
-- added ttl cache gc() method
-- consider an item that expires this ms as still live
-
-0.3.2
-
-- switch to an adaptive timebase for timestamps
-
-0.3.0
-
-- LruCache
-- MultiValueCache
-
-0.2.0
-
-- TtlCache
+- 0.4.0 - ttlcache: speed up deletes, 100% unit test coverage, benchmark script
+- 0.3.6 - timebase: track timestamps more closely; mvcache: getLength method; test with qnit
+- 0.3.4 - make timebase track current time even during blocking burst fetches
+- 0.3.3 - added ttl cache gc() method; consider an item that expires this ms as still live
+- 0.3.2 - switch to an adaptive timebase for timestamps
+- 0.3.0 - LruCache; MultiValueCache
+- 0.2.0 - TtlCache
 
 
 Todo
