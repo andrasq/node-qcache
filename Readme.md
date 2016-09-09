@@ -58,13 +58,13 @@ return the value stored under key.  Missing keys and expired contents read as
 undefined.  An item expires when the current timestamp exceeds the item
 ttl (time-to-live) value.
 
-### set( key, value )
+### set( key, value ), put
 
 store the value under key for the configured ttl milliseconds.  If the cache
 has already reached its capacity, one or more of the stored values will be
 discarded to make room.
 
-### delete( key )
+### delete( key ), del
 
 remove the value from the cache.  Removed items read as undefined.
 
