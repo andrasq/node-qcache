@@ -59,9 +59,9 @@ Options:
 
 Properties:
 
-- `ttlCache.ttl` - the configured ttl
-- `ttlCache.capacity` - the configured capacity
-- `ttlCache.count` - number of items currently stored.  Read-only; do not write this value.
+- `ttl` - the configured ttl
+- `capacity` - the configured capacity
+- `count` - number of items currently stored.  Read-only; do not write this value.
 
 ### get( key )
 

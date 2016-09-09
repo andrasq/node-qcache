@@ -33,6 +33,8 @@ module.exports = {
         },
 
         'should export and alias properties': function(t) {
+            t.equal(typeof this.cache.ttl, 'number');
+            t.equal(typeof this.cache.capacity, 'number');
             t.equal(typeof this.cache.count, 'number');
 
             t.equal(typeof this.cache.get, 'function');
