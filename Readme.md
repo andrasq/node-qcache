@@ -153,6 +153,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
+- 0.4.2 - ttlcache: adjust benchmark to simulate reuse
 - 0.4.0 - ttlcache: speed up deletes, 100% unit test coverage, benchmark script
 - 0.3.6 - timebase: track timestamps more closely; mvcache: getLength method; test with qnit
 - 0.3.4 - make timebase track current time even during blocking burst fetches
@@ -167,4 +168,3 @@ Todo
 
 - lru cache unit tests
 - split out qtimebase into own package
-- qcache: try with two objects for items and timestamps

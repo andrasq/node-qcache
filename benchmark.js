@@ -11,6 +11,7 @@ var lru_cache = require('lru-cache');
 
 var nloops = 100;
 var nitems = 100;
+var nreuse = 4;
 var keys = []; for (var i=0; i<nitems; i++) keys[i] = 'key-' + i;
 var x;
 
@@ -19,12 +20,12 @@ var x;
 
 qtimeit.bench.opsPerTest = nloops * nitems;
 qtimeit.bench.timeGoal = 2;
-qtimeit.bench({
+for (var repeat=0; repeat<5; repeat++) qtimeit.bench({
     qcache: function() {
         c = new qcache.TtlCache({ capacity: 999999999, ttl: 999999 });
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.set(keys[i], i);
-            for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
             for (var i=0; i<nitems; i++) c.delete(keys[i]);
         }
     },
@@ -33,7 +34,7 @@ qtimeit.bench({
         c = new node_cache();
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.set(keys[i], i);
-            for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
             for (var i=0; i<nitems; i++) c.del(keys[i]);
         }
     },
@@ -43,7 +44,7 @@ qtimeit.bench({
         c = memory_cache;
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.put(keys[i], i);
-            for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
             for (var i=0; i<nitems; i++) c.del(keys[i]);
         }
     },
@@ -52,7 +53,7 @@ qtimeit.bench({
         c = lru_cache({ max: 999999999, maxAge: 999999 });
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.set(keys[i], i);
-            for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
             for (var i=0; i<nitems; i++) c.del(keys[i]);
         }
     },
