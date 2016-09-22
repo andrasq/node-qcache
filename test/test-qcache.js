@@ -184,11 +184,22 @@ module.exports = {
         },
 
         'time 200k set/get calls': function(t) {
+            var x;
             var t1 = Date.now();
-            for (var i=0; i<200000; i++) { this.cache.set("t", 1); this.cache.get("t"); }
+            for (var i=0; i<200000; i++) { this.cache.set("t", 1); x = this.cache.get("t"); }
             var t2 = Date.now();
-            // console.log("AR: 100k set/get in ms", t2-t1);
+            // console.log("AR: 200k set/get in ms", t2-t1);
             // > 20+m/s
+            t.done();
+        },
+
+        'time 200k set/get to 1k unique keys': function(t) {
+            var x, keys = new Array(1000);
+            for (var i=0; i<keys.length; i++) keys[i] = 'k' + i;
+            var t1 = Date.now();
+            for (var i=0; i<200000; ) for (var j=0; j<keys.length; j++, i++) { this.cache.set(keys[j], 1); x = this.cache.get(keys[j]) };
+            var t2 = Date.now();
+            //console.log("AR: 200k set/get unique keys in ms", t2-t1);
             t.done();
         },
 
