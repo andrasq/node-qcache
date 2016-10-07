@@ -153,6 +153,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
+- 0.5.0 - move lib/timebase into qtimebase-1.0.0
 - 0.4.2 - ttlcache: adjust benchmark to simulate reuse
 - 0.4.0 - ttlcache: speed up deletes, 100% unit test coverage, benchmark script
 - 0.3.6 - timebase: track timestamps more closely; mvcache: getLength method; test with qnit
