@@ -5,7 +5,7 @@
 
 'use strict';
 
-var TtlCache = require('../ttlcache');
+var TtlCache = require('../').TtlCache;
 
 module.exports = {
     setUp: function(done) {
@@ -18,6 +18,32 @@ module.exports = {
         'index should export TtlCache': function(t) {
             var qcache = require('../index');
             t.ok(new qcache() instanceof TtlCache);
+            t.done();
+        },
+
+        'ttlcache should export TtlCache': function(t) {
+            var qcache = require('../ttlcache');
+            t.ok(new qcache() instanceof TtlCache);
+            t.done();
+        },
+
+        'should act as factory': function(t) {
+            t.ok(TtlCache() instanceof TtlCache);
+            t.done();
+        },
+
+        'should export and alias properties': function(t) {
+            t.equal(typeof this.cache.ttl, 'number');
+            t.equal(typeof this.cache.capacity, 'number');
+            t.equal(typeof this.cache.count, 'number');
+
+            t.equal(typeof this.cache.get, 'function');
+            t.equal(typeof this.cache.set, 'function');
+            t.equal(typeof this.cache.delete, 'function');
+            t.equal(typeof this.cache.gc, 'function');
+
+            t.equal(this.cache.del, this.cache.delete);
+            t.equal(this.cache.put, this.cache.set);
             t.done();
         },
 
@@ -36,6 +62,29 @@ module.exports = {
             var v = this.uniqid();
             this.cache.set("t", v);
             t.equal(this.cache.get("t"), v);
+            t.done();
+        },
+
+        'should set and get falsy values': function(t) {
+            var values = [0, "", null, false];
+            for (var i in values) {
+                this.cache.set("t", values[i]);
+                t.strictEqual(this.cache.get("t"), values[i]);
+            }
+            t.done();
+        },
+
+        'set should increment count': function(t) {
+            t.equal(this.cache.count, 0);
+            this.cache.set('t', 1);
+            t.equal(this.cache.count, 1);
+            t.done();
+        },
+
+        'double set should not increment count twice': function(t) {
+            this.cache.set('t', 1);
+            this.cache.set('t', 2);
+            t.equal(this.cache.count, 1);
             t.done();
         },
 
@@ -78,6 +127,42 @@ module.exports = {
             t.done();
         },
 
+        'should double delete value': function(t) {
+            this.cache.set("t", 1);
+            this.cache.delete("t");
+            this.cache.delete("t");
+            t.equal(this.cache.get("t"), undefined);
+            t.done();
+        },
+
+        'delete should decrement count': function(t) {
+            this.cache.set('t', 1);
+            this.cache.delete('t');
+            t.equal(this.cache.count, 0);
+            t.done();
+        },
+
+        'double delete should not decrement count twice': function(t) {
+            this.cache.set('t', 1);
+            this.cache.delete('t');
+            this.cache.delete('t');
+            t.equal(this.cache.count, 0);
+            t.done();
+        },
+
+        'delete should gc after 1024 deletions': function(t) {
+            for (var i=0; i<1030; i++) this.cache.set(i, i);
+            t.equal(this.cache.count, 1030);
+            for (var i=1; i<1024; i++) this.cache.delete(i);
+            t.equal(this.cache.count, 1030 - 1023);
+            t.equal(this.cache._deleteCount, 1023);
+            // 1024th deletion will gc if more deleted-to-live ratio is > 100
+            this.cache.delete(0);
+            t.equal(this.cache.count, 1030 - 1024);
+            t.equal(this.cache._deleteCount, 0);
+            t.done();
+        },
+
         'gc should purge timed out items': function(t) {
             var cache = this.cache;
             cache.set("t1", 1);
@@ -98,12 +183,34 @@ module.exports = {
             }, 12);
         },
 
-        'test 200k set/get calls': function(t) {
+        'time 200k set/get calls': function(t) {
+            var x;
             var t1 = Date.now();
-            for (var i=0; i<200000; i++) { this.cache.set("t", 1); this.cache.get("t"); }
+            for (var i=0; i<200000; i++) { this.cache.set("t", 1); x = this.cache.get("t"); }
             var t2 = Date.now();
-            // console.log("AR: 100k set/get in ms", t2-t1);
+            // console.log("AR: 200k set/get in ms", t2-t1);
             // > 20+m/s
+            t.done();
+        },
+
+        'time 200k set/get to 1k unique keys': function(t) {
+            var x, keys = new Array(1000);
+            for (var i=0; i<keys.length; i++) keys[i] = 'k' + i;
+            var t1 = Date.now();
+            for (var i=0; i<200000; ) for (var j=0; j<keys.length; j++, i++) { this.cache.set(keys[j], 1); x = this.cache.get(keys[j]) };
+            var t2 = Date.now();
+            //console.log("AR: 200k set/get unique keys in ms", t2-t1);
+            t.done();
+        },
+
+        'time 20k gc calls': function(t) {
+            for (var i=0; i<20; i++) this.cache.set("t"+i, 1);
+            for (var i=0; i<20; i+=2) this.cache.delete("t"+i);
+            var t1 = Date.now();
+            for (var i=0; i<20000; i++) this.cache.gc();
+            var t2 = Date.now();
+            // console.log("AR: 20k set/get in ms", t2-t1);
+            // 86k/s 100 items, 1.5m/s 10 items, 81/s 20k items
             t.done();
         },
     },

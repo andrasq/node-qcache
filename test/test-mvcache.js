@@ -99,7 +99,15 @@ module.exports = {
             t.done();
         },
 
-        'test 100k set/get calls': function(t) {
+        'should return list length': function(t) {
+            this.cache.push("t", 1);
+            this.cache.push("t", 2);
+            t.equal(this.cache.getLength("t"), 2);
+            t.equal(this.cache.getLength("x"), 0);
+            t.done();
+        },
+
+        'time 100k set/get calls': function(t) {
             //this.cache.push("t", 0);
             var t1 = Date.now();
             for (var i=0; i<100000; i++) { this.cache.push("t", 1); this.cache.shift("t"); }
