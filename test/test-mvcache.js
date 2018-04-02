@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Andras Radics
+ * Copyright (C) 2015,2018 Andras Radics
  * Licensed under the Apache License, Version 2.0
  */
 
@@ -84,7 +84,7 @@ module.exports = {
 
         'unshift should add a new oldest value': function(t) {
             var v = this.uniqid();
-            this.cache.push("t", this.uniqid());
+            this.cache.unshift("t", this.uniqid());
             this.cache.unshift("t", v);
             t.equal(this.cache.shift("t"), v);
             t.done();
@@ -99,11 +99,29 @@ module.exports = {
             t.done();
         },
 
+        'should allow remove of non-existent value': function(t) {
+            this.cache.remove('t', 'nonesuch');
+            t.equal(this.cache.shift('t'), undefined);
+            t.done();
+        },
+
         'should return list length': function(t) {
             this.cache.push("t", 1);
             this.cache.push("t", 2);
             t.equal(this.cache.getLength("t"), 2);
             t.equal(this.cache.getLength("x"), 0);
+            t.done();
+        },
+
+        'should periodically compact removed names': function(t) {
+            for (var i=0; i<50; i++) {
+                this.cache.push(i, i);
+                this.cache.shift(i);
+                if (i == 1) this.cache.push(i, i);
+            }
+            t.ok(this.cache._deletedCount < 50);
+            t.ok(Object.keys(this.cache._deleted).length < 50);
+            t.equal(this.cache.shift(1), 1);
             t.done();
         },
 
