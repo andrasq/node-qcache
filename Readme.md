@@ -69,11 +69,14 @@ return the value stored under key.  Missing keys and expired contents read as
 undefined.  An item expires when the current timestamp exceeds the item
 ttl (time-to-live) value.
 
-### set( key, value ), put
+### set( key, value [,ttl] ), put
 
 store the value under key for the configured ttl milliseconds.  If the cache
 has already reached its capacity, one or more of the stored values will be
 discarded to make room.
+
+If provided, the optional time-to-live `ttl` will be used instead of the cache
+instance default.
 
 ### delete( key ), del
 
@@ -153,6 +156,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
+- 0.6.0 - optional ttl param to TtlCache set()
 - 0.5.0 - move lib/timebase into qtimebase-1.0.0
 - 0.4.2 - ttlcache: adjust benchmark to simulate reuse
 - 0.4.0 - ttlcache: speed up deletes, 100% unit test coverage, benchmark script

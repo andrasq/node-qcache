@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Andras Radics
+ * Copyright (C) 2015,2018 Andras Radics
  * Licensed under the Apache License, Version 2.0
  */
 
@@ -98,16 +98,16 @@ module.exports = {
         },
 
         'should impose timeout': function(t) {
-            var cache = this.cache;
+            var cache = new TtlCache({ ttl: 20 });
             t.expect(2);
-            this.cache.set("t", 1);
+            cache.set("t", 1);
             setTimeout(function() {
                 t.equal(cache.get("t"), 1);
             }, 2);
             setTimeout(function() {
                 t.equal(cache.get("t"), undefined);
                 t.done();
-            }, 13);
+            }, 25);
         },
 
         'should honor configured timeout': function(t) {
@@ -117,6 +117,15 @@ module.exports = {
                 t.equal(cache.get("t"), undefined);
                 t.done();
             }, 4);
+        },
+
+        'should honor user-provided timeout': function(t) {
+            var cache = new TtlCache({ttl: 20000});
+            cache.set("t", 1, 2);
+            setTimeout(function() {
+                t.equal(cache.get("t"), undefined);
+                t.done();
+            }, 10);
         },
 
         'should delete value': function(t) {
@@ -164,13 +173,13 @@ module.exports = {
         },
 
         'gc should purge timed out items': function(t) {
-            var cache = this.cache;
+            var cache = new TtlCache({ ttl: 20 });
             cache.set("t1", 1);
             // NOTE: this test is timing sensitive.  Do not console.log
             // during the run, because it can add 3-5 ms and break the test
             setTimeout(function() {
                 cache.set("t2", 2);
-            }, 5);
+            }, 10);
             setTimeout(function() {
                 var countBefore = cache.count;
                 cache.gc();
@@ -180,7 +189,7 @@ module.exports = {
                 t.equal(t2value, 2);
                 t.equal(countAfter, 1);
                 t.done();
-            }, 12);
+            }, 22);
         },
 
         'time 200k set/get calls': function(t) {
