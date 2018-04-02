@@ -183,6 +183,3 @@ Change Log
 
 Todo
 ----
-
-- lru cache unit tests
-- split out qtimebase into own package
