@@ -88,7 +88,7 @@ has already reached its capacity, one or more of the stored values will be
 discarded to make room.
 
 If provided, the optional time-to-live `ttl` will be used instead of the cache
-instance default.
+instance configured default.
 
 ### delete( key ), del
 
