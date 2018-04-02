@@ -32,21 +32,30 @@ Each cache is exported both as a property of qcache, and as a separate file.
         var MultiValueCache = require('qcache/mvcache');
 
 
+Benchmark
+---------
+
+    $ node benchmark.js
+
+    package versions:
+      qcache 0.3.6
+      node-cache 3.2.1
+      memory-cache 0.1.6
+      lru-cache 4.0.1
+
+    qtimeit=0.21.2 node=9.8.0 v8=6.2.414.46-node.21 platform=linux kernel=4.9.0-0.bpo.4-amd64 up_threshold=false
+    arch=ia32 mhz=4383 cpuCount=4 cpu="Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz"
+    name                 speed           rate
+    lru_cache          551,184 ops/sec    276 >
+    node_cache       1,182,399 ops/sec    591 >>>
+    memory_cache     2,843,744 ops/sec   1422 >>>>>>>
+    qcache           9,566,536 ops/sec   4783 >>>>>>>>>>>>>>>>>>>>>>>>
+
+
 TtlCache
 --------
 
 Key-value store with a time-to-live (ttl) timeout limit.
-
-## Benchmark
-
-    $ node benchmark.js
-
-    node=6.2.2 arch=ia32 mhz=3500 cpu="AMD Phenom(tm) II X4 B55 Processor" up_threshold=11
-    name  speed  (stats)  rate
-    qcache  1,582,436 ops/sec (29 runs of 10 calls in 1.833 out of 2.368 sec, +/- 0%) 1000
-    node_cache  249,289 ops/sec (5 runs of 10 calls in 2.006 out of 2.381 sec, +/- 0%) 158
-    memory_cache  859,635 ops/sec (16 runs of 10 calls in 1.861 out of 2.110 sec, +/- 0%) 543
-    lru_cache  467,421 ops/sec (9 runs of 10 calls in 1.925 out of 2.246 sec, +/- 0%) 295
 
 ### new TtlCache( options )
 
