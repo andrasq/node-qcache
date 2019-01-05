@@ -53,10 +53,35 @@ module.exports = {
                 cache.set('a', 1);
                 cache.set('b', 2);
                 cache.set('c', 3);
+                cache.set('a', 11);
                 cache.set('d', 4);
                 t.equal(Object.keys(cache.keyvals).length, 3);
-                t.equal(cache.get('b'), 2);
-                t.equal(cache.get('a'), undefined);
+                t.equal(cache.get('b'), undefined);
+                t.equal(cache.get('a'), 11);
+                t.equal(cache.get('c'), 3);
+                t.equal(cache.get('d'), 4);
+                t.done();
+            },
+        },
+
+        'get': {
+            'should return undefined if not found': function(t) {
+                var cache = new LruCache();
+                cache.set('a', 1);
+                t.strictEqual(cache.get('a'), 1);
+                t.strictEqual(cache.get('b'), undefined);
+                t.done();
+            },
+
+            'should refresh value': function(t) {
+                var cache = new LruCache({ capacity: 2 });
+                cache.set('a', 1);
+                cache.set('b', 2);
+                cache.get('a');
+                cache.set('c', 3);
+                t.equal(cache.get('a'), 1);
+                t.equal(cache.get('b'), undefined);
+                t.equal(cache.get('c'), 3);
                 t.done();
             },
         },
