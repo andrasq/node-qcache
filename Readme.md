@@ -168,6 +168,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
+- 0.6.2 - improve lrucache tests
 - 0.6.1 - write LruCache unit tests, fix LruCache delete; 100% test coverage
 - 0.6.0 - optional ttl param to TtlCache set()
 - 0.5.0 - move lib/timebase into qtimebase-1.0.0
