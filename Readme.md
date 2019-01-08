@@ -171,6 +171,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
+- 0.7.0 - lrucache much faster rewrite (old version now `require('qcache').LruCache1`)
 - 0.6.2 - improve lrucache tests
 - 0.6.1 - write LruCache unit tests, fix LruCache delete; 100% test coverage
 - 0.6.0 - optional ttl param to TtlCache set()

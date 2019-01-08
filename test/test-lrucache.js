@@ -1,11 +1,11 @@
 /**
- * Copyright (C) 2015,2018 Andras Radics
+ * Copyright (C) 2015,2018-2019 Andras Radics
  * Licensed under the Apache License, Version 2.0
  */
 
 'use strict';
 
-var LruCache = require('../lrucache');
+var LruCache = require('../').LruCache;
 
 module.exports = {
     setUp: function(done) {
@@ -39,6 +39,15 @@ module.exports = {
                 t.equal(cache.capacity, 1234);
                 t.done();
             },
+
+            'should export expected properties': function(t) {
+                var cache = new LruCache({ capacity: 1234 });
+                cache.set('a', 1);
+                cache.set('b', 2);
+                t.equal(cache.capacity, 1234);
+                t.equal(cache.count, 2);
+                t.done();
+            },
         },
 
         'set': {
@@ -55,7 +64,8 @@ module.exports = {
                 cache.set('c', 3);
                 cache.set('a', 11);
                 cache.set('d', 4);
-                t.equal(Object.keys(cache.keyvals).length, 3);
+                if (cache.keyvals) t.equal(Object.keys(cache.keyvals).length, 3);       // v1
+                if (cache.nodemap) t.equal(Object.keys(cache.nodemap).length, 3);       // v2
                 t.equal(cache.get('b'), undefined);
                 t.equal(cache.get('a'), 11);
                 t.equal(cache.get('c'), 3);
