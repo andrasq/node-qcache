@@ -12,6 +12,8 @@ module.exports = function(opt) { return new qcache.TtlCache(opt) };
 module.exports.TimeoutCache = qcache.TimeoutCache;
 
 module.exports.TtlCache = require('./ttlcache');
-module.exports.LruCache = require('./lrucache');
+module.exports.LruCache1 = require('./lib/lrucache');
+module.exports.LruCache2 = require('./lrucache');
+module.exports.LruCache = module.exports.LruCache2;
 module.exports.MultiValueCache = require('./mvcache');
 module.exports.MvcCache = module.exports.MultiValueCache;

@@ -18,6 +18,7 @@ module.exports = {
         'index should export LruCache': function(t) {
             var qcache = require('../index');
             t.equal(LruCache, qcache.LruCache);
+            t.notEqual(qcache.LruCache1, qcache.LruCache2);
             t.done();
         },
 
@@ -111,6 +112,33 @@ module.exports = {
                 t.equal(this.cache.get('b'), 2);
                 t.done();
             },
+        },
+
+        'should track count': function(t) {
+            var cache = new LruCache();
+            t.equal(cache.count, 0);
+            cache.delete('a');
+            t.equal(cache.count, 0);
+
+            cache.set('a', 1);
+            t.equal(cache.count, 1);
+            cache.set('b', 2);
+            t.equal(cache.count, 2);
+
+            cache.set('a', 11);
+            t.equal(cache.count, 2);
+
+            cache.delete('c');
+            t.equal(cache.count, 2);
+
+            cache.delete('a');
+            t.equal(cache.count, 1);
+            cache.delete('b');
+            t.equal(cache.count, 0);
+            cache.delete('c');
+            t.equal(cache.count, 0);
+
+            t.done();
         },
     },
 };

@@ -1,1 +1,1 @@
-module.exports = require('./lib/lrucache.js');
+module.exports = require('./lib/lrucache2.js');

@@ -103,6 +103,9 @@ LruCache
 
 Least-recently-used replacement policy cache with a capacity limit.
 
+As of qcache@0.7.0 the cache was reimplemented using a fast doubly-linked list,
+which is not only 2-3x faster but for large datasets can be orders of magnitude faster.
+
 ### new (require('qcache').LruCache)( options )
 
 create a new lru cache
@@ -112,6 +115,11 @@ Options:
 `capacity` - max number of elements to cache at one time.  Once the cache
 capacity is reached, setting a new key causes the least recently used value to
 be discarded.  Default is `Infinity`, unlimited number of entries.
+
+Properties:
+
+- `capacity` - the configured capacity
+- `count` - the number of items in the cache
 
 ### set( key, value )
 
