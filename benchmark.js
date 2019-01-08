@@ -17,8 +17,8 @@ console.log("  node-cache %s", require('node-cache/package.json').version);
 console.log("  memory-cache %s", require('memory-cache/package.json').version);
 console.log("  lru-cache %s", require('lru-cache/package.json').version);
 
-var nloops = 100;
-var nitems = 100;
+var nloops = 20;
+var nitems = 500;
 var nreuse = 4;
 var keys = []; for (var i=0; i<nitems; i++) keys[i] = 'key-' + i;
 var x;
