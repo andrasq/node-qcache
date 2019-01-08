@@ -52,7 +52,7 @@ Benchmark
 
 
 TtlCache
---------
+========
 
 Key-value store with a time-to-live (ttl) timeout limit.
 
@@ -99,7 +99,7 @@ remove the value from the cache.  Removed items read as undefined.
 remove expired elements from the cache to free the occupied storage space
 
 LruCache
---------
+========
 
 Least-recently-used replacement policy cache with a capacity limit.
 
@@ -138,7 +138,7 @@ remove the key from the cache.
 
 
 MultiValueCache
----------------
+===============
 
 The multi-value cache holds multiple values indexed by the same key in
 oldest-first insertion order.  There are no ttl and capacity limits
@@ -175,6 +175,7 @@ test whether there are any values stored under key
 ### getLength( key )
 
 return the count of items stored under `key`
+
 
 Change Log
 ----------
