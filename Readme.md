@@ -4,7 +4,7 @@ qcache
 [![Coverage Status](https://coveralls.io/repos/github/andrasq/node-qcache/badge.svg?branch=master)](https://coveralls.io/github/andrasq/node-qcache?branch=master)
 
 
-Some useful caches.
+Some useful caches: time-to-live, least-recently-used, multi-value.
 
 Caches implement the Store semantics of `set`, `get`, and `delete`, but unlike
 Store, caches are free to discard contents according to their retention
@@ -21,16 +21,15 @@ Installation
 Overview
 --------
 
-Each cache is exported both as a property of qcache, and as a separate file.
-
         var TtlCache = require('qcache').TtlCache;
         var LruCache = require('qcache').LruCache;
         var MultiValueCache = require('qcache').MultiValueCache;
 
-        var TtlCache = require('qcache/ttlcache');
-        var LruCache = require('qcache/lrucache');
-        var MultiValueCache = require('qcache/mvcache');
-
+        var cache = new LruCache();
+        cache.set('a', 1);
+        cache.set('b', 2);
+        var a = cache.get('a');         // => 1
+        var b = cache.get('b');         // => 2
 
 Benchmark
 ---------
@@ -59,7 +58,7 @@ Key-value store with a time-to-live (ttl) timeout limit.
 
 ### new TtlCache( options )
 
-        var TtlCache = require('qcache/ttlcache');
+        var TtlCache = require('qcache').TtlCache;
         var cache = new TtlCache();
 
 Options:
@@ -74,11 +73,12 @@ Properties:
 - `ttl` - the configured ttl
 - `capacity` - the configured capacity
 - `count` - number of items currently stored.  Read-only; do not write this value.
+- `max` - same as capacity
 
 ### get( key )
 
 return the value stored under key.  Missing keys and expired contents read as
-undefined.  An item expires when the current timestamp exceeds the item
+`undefined`.  An item expires when the current timestamp exceeds the item
 ttl (time-to-live) value.
 
 ### set( key, value [,ttl] ), put
@@ -103,7 +103,7 @@ LruCache
 
 Least-recently-used replacement policy cache with a capacity limit.
 
-### new (require('qcache/lrucache'))( options )
+### new (require('qcache').LruCache)( options )
 
 create a new lru cache
 
@@ -111,17 +111,20 @@ Options:
 
 `capacity` - max number of elements to cache at one time.  Once the cache
 capacity is reached, setting a new key causes the least recently used value to
-be discarded.  Uses are insertion (set) and lookup (get).
+be discarded.  Default is `Infinity`, unlimited number of entries.
 
 ### set( key, value )
 
 store the value under key.  This key/value becomes the most recently used.
+If this value would exceed the configured cache `capacity`, the oldest (least recently
+accessed) value is displaced from the cache..
 
 ### get( key )
 
 get the value stored under key.  This key/value becomes the most recently used.
+Missing keys and displaced values read as `undefined`.
 
-### delete( key )
+### delete( key ), del
 
 remove the key from the cache.
 
@@ -134,7 +137,7 @@ oldest-first insertion order.  There are no ttl and capacity limits
 implemented, and since delete semantics are not immediately obvious, there is
 no delete yet.
 
-### new (require('qcache/mvcache'))( )
+### new (require('qcache').MultiValueCache)( )
 
 create a new multi-value cache
 
