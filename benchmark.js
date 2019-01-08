@@ -75,7 +75,8 @@ qtimeit.bench({
         }
     },
 
-    'qcache.LruCache1 v1': function() {
+    'qcache.LruCache': function() {
+        // this is the v1 but do not run, overwrite with v2
         c = new qcache.LruCache1({ capacity: 999999999, ttl: 999999 });
         c.del = c.delete;
         for (var j=0; j<nloops; j++) {
@@ -85,7 +86,7 @@ qtimeit.bench({
         }
     },
 
-    'qcache.LruCache2 v2': function() {
+    'qcache.LruCache': function() {
         c = new qcache.LruCache2({ capacity: 999999999, ttl: 999999 });
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.set(keys[i], i);
@@ -103,29 +104,31 @@ qtimeit.bench({
         testCache(c);
     },
 
-    'qcache.LruCache v1 1% lru': function() {
-        c = new qcache.LruCache1({ capacity: nitems * 100/101 });
-        c.del = c.delete;
-        testCache(c);
-    },
-
-    'qcache.LruCache v2 1% lru2': function() {
-        c = new qcache.LruCache2({ capacity: nitems * 100/101 });
-        testCache(c);
-    },
-
     'lru-cache 25% lru': function() {
         c = lru_cache({ max: nitems * .80, maxAge: 999999 });
         testCache(c);
     },
 
-    'qcache.LruCache v1 25% lru': function() {
+    'qcache.LruCache 1% lru': function() {
+        // this is the v1 but do not run, overwrite with v2
+        c = new qcache.LruCache1({ capacity: nitems * 100/101 });
+        c.del = c.delete;
+        testCache(c);
+    },
+
+    'qcache.LruCache 25% lru': function() {
+        // this is the v1 but do not run, overwrite with v2
         c = new qcache.LruCache1({ capacity: nitems * .80 });
         c.del = c.delete;
         testCache(c);
     },
 
-    'qcache.LruCache v2 25% lru2': function() {
+    'qcache.LruCache 1% lru': function() {
+        c = new qcache.LruCache2({ capacity: nitems * 100/101 });
+        testCache(c);
+    },
+
+    'qcache.LruCache 25% lru': function() {
         c = new qcache.LruCache2({ capacity: nitems * .80 });
         testCache(c);
     },

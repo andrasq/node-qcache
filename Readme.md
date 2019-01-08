@@ -105,6 +105,7 @@ Least-recently-used replacement policy cache with a capacity limit.
 
 As of qcache@0.7.0 the cache was reimplemented using a fast doubly-linked list,
 which is not only 2-3x faster but for large datasets can be orders of magnitude faster.
+The old version is still available as `require('qcache').LruCache1`.
 
 ### new (require('qcache').LruCache)( options )
 
@@ -180,7 +181,7 @@ return the count of items stored under `key`
 Change Log
 ----------
 
-- 0.7.0 - lrucache much faster rewrite (old version now `require('qcache').LruCache1`)
+- 0.7.0 - lrucache much faster rewrite
 - 0.6.2 - improve lrucache tests
 - 0.6.1 - write LruCache unit tests, fix LruCache delete; 100% test coverage
 - 0.6.0 - optional ttl param to TtlCache set()
