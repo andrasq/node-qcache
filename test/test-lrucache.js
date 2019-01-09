@@ -8,13 +8,18 @@
 var LruCache = require('../').LruCache;
 
 module.exports = {
-    setUp: function(done) {
-        this.cache = new LruCache();
-        this.uniqid = function() { return Math.random() * 0x1000000 | 0 };
-        done();
-    },
+    'LruCache': {
+        before: function(done) {
+            LruCache = require('../').LruCache;
+            done();
+        },
 
-    LruCache: {
+        setUp: function(done) {
+            this.cache = new LruCache();
+            this.uniqid = function() { return Math.random() * 0x1000000 | 0 };
+            done();
+        },
+
         'index should export LruCache': function(t) {
             var qcache = require('../index');
             t.equal(LruCache, qcache.LruCache);
@@ -141,4 +146,19 @@ module.exports = {
             t.done();
         },
     },
+
+    'LruCache v1': {
+        before: function(done) {
+            LruCache = require('../').LruCache1;
+            done();
+        },
+    }
 };
+
+// duplicate all the same tests for v1 as well
+for (var k in module.exports['LruCache']) {
+    if (k === 'before') continue;
+console.log(k);
+    if (/should export LruCache/.test(k)) continue;
+    module.exports['LruCache v1'][k] = module.exports['LruCache'][k];
+}
