@@ -37,18 +37,27 @@ Benchmark
     $ node benchmark.js
 
     package versions:
-      qcache 0.3.6
-      node-cache 3.2.1
-      memory-cache 0.1.6
-      lru-cache 4.0.1
+      qcache 0.7.0
+      node-cache 4.2.0
+      memory-cache 0.2.0
+      lru-cache 5.1.1
 
-    qtimeit=0.21.2 node=9.8.0 v8=6.2.414.46-node.21 platform=linux kernel=4.9.0-0.bpo.4-amd64 up_threshold=false
-    arch=ia32 mhz=4383 cpuCount=4 cpu="Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz"
-    name                 speed           rate
-    lru_cache          551,184 ops/sec    276 >
-    node_cache       1,182,399 ops/sec    591 >>>
-    memory_cache     2,843,744 ops/sec   1422 >>>>>>>
-    qcache           9,566,536 ops/sec   4783 >>>>>>>>>>>>>>>>>>>>>>>>
+    ---------------- TTL cache:
+    qtimeit=0.21.0 node=8.11.1 v8=6.2.414.50 platform=linux kernel=4.9.0-0.bpo.4-amd64 up_threshold=false
+    arch=ia32 mhz=4186 cpuCount=8 cpu="Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz"
+    name                           speed           rate
+    lru-cache                  3,867,374 ops/sec   1934 >>>>>>>>>>
+    node-cache                   883,862 ops/sec    442 >>
+    memory-cache               2,537,581 ops/sec   1269 >>>>>>
+    qcache.TtlCache            8,744,054 ops/sec   4372 >>>>>>>>>>>>>>>>>>>>>>
+    qcache.LruCache capped     5,053,493 ops/sec   2527 >>>>>>>>>>>>>
+
+    ---------------- LRU cache:
+    name                           speed           rate
+    lru-cache 1% lru           1,090,209 ops/sec    545 >>>
+    lru-cache 25% lru          1,247,800 ops/sec    624 >>>
+    qcache.LruCache 1% lru     5,011,800 ops/sec   2506 >>>>>>>>>>>>>
+    qcache.LruCache 25%        4,659,632 ops/sec   2330 >>>>>>>>>>>>
 
 
 TtlCache
