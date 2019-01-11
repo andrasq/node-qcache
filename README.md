@@ -11,25 +11,19 @@ Store, caches are free to discard contents according to their retention
 heuristics.
 
 
-Installation
-------------
-
-        npm install qcache
-        npm test qcache
-
-
 Overview
 --------
 
-        var TtlCache = require('qcache').TtlCache;
-        var LruCache = require('qcache').LruCache;
-        var MultiValueCache = require('qcache').MultiValueCache;
+    var TtlCache = require('qcache').TtlCache;
+    var LruCache = require('qcache').LruCache;
+    var MultiValueCache = require('qcache').MultiValueCache;
 
-        var cache = new LruCache();
-        cache.set('a', 1);
-        cache.set('b', 2);
-        var a = cache.get('a');         // => 1
-        var b = cache.get('b');         // => 2
+    var cache = new LruCache();
+    cache.set('a', 1);
+    cache.set('b', 2);
+    var a = cache.get('a');         // => 1
+    var b = cache.get('b');         // => 2
+
 
 Benchmark
 ---------
@@ -106,6 +100,7 @@ remove the value from the cache.  Removed items read as undefined.
 ### gc( )
 
 remove expired elements from the cache to free the occupied storage space
+
 
 LruCache
 ========
