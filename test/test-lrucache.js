@@ -158,7 +158,6 @@ module.exports = {
 // duplicate all the same tests for v1 as well
 for (var k in module.exports['LruCache']) {
     if (k === 'before') continue;
-console.log(k);
     if (/should export LruCache/.test(k)) continue;
     module.exports['LruCache v1'][k] = module.exports['LruCache'][k];
 }
