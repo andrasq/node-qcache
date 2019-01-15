@@ -14,9 +14,10 @@ heuristics.
 Overview
 --------
 
-    var TtlCache = require('qcache').TtlCache;
-    var LruCache = require('qcache').LruCache;
-    var MultiValueCache = require('qcache').MultiValueCache;
+    const qcache = require('qcache');
+    const TtlCache = qcache.TtlCache;
+    const LruCache = qcache.LruCache;
+    const MultiValueCache = qcache.MultiValueCache;
 
     var cache = new LruCache();
     cache.set('a', 1);
@@ -59,9 +60,9 @@ TtlCache
 
 Key-value store with a time-to-live (ttl) timeout limit.
 
-### new TtlCache( options )
+### new qcache.TtlCache( options )
 
-        var TtlCache = require('qcache').TtlCache;
+        var TtlCache = qcache.TtlCache;
         var cache = new TtlCache();
 
 Options:
@@ -109,9 +110,9 @@ Least-recently-used replacement policy cache with a capacity limit.
 
 As of qcache@0.7.0 the cache was reimplemented using a fast doubly-linked list,
 which is not only 2-3x faster but for large datasets can be orders of magnitude faster.
-The old version is still available as `require('qcache').LruCache1`.
+The old version is still available as `qcache.LruCache1`.
 
-### new (require('qcache').LruCache)( options )
+### new qcache.LruCache( options )
 
 create a new lru cache
 
@@ -150,7 +151,7 @@ oldest-first insertion order.  There are no ttl and capacity limits
 implemented, and since delete semantics are not immediately obvious, there is
 no delete yet.
 
-### new (require('qcache').MultiValueCache)( )
+### new qcache.MultiValueCache( )
 
 create a new multi-value cache
 
