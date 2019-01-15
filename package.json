@@ -8,6 +8,7 @@
     "url": "git://github.com/andrasq/node-qcache"
   },
   "main": "index.js",
+  "readme": "see README.md in the repository",
   "author": {
     "name": "Andras",
     "url": "http://github.com/andrasq"
