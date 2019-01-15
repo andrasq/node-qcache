@@ -32,6 +32,7 @@ qtimeit.bench.showRunDetails = false;
 qtimeit.bench.baselineAvg = 2000000;
 qtimeit.bench.visualize = true;
 qtimeit.bench.showPlatformInfo = true;
+qtimeit.bench.showTestInfo = true;
 
 for (var repeat=0; repeat<5; repeat++) {
 
@@ -49,7 +50,7 @@ qtimeit.bench({
     },
 
     'node-cache': function() {
-        c = new node_cache();
+        c = new node_cache({ stdTTL: 999999, useClones: false, deleteOnExpire: true });
         for (var j=0; j<nloops; j++) {
             for (var i=0; i<nitems; i++) c.set(keys[i], i);
             for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
@@ -57,6 +58,7 @@ qtimeit.bench({
         }
     },
 
+/** no option to cap or ttl
     'memory-cache': function() {
         // global cache, not separate objects ?!
         c = memory_cache;
@@ -67,6 +69,7 @@ qtimeit.bench({
             for (var i=0; i<nitems; i++) c.del(keys[i]);
         }
     },
+**/
 
     'qcache.TtlCache': function() {
         c = new qcache.TtlCache({ capacity: 999999999, ttl: 999999 });
