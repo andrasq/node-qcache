@@ -1,6 +1,6 @@
 {
   "name": "qcache",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "useful caches: ttl, lru, multi-value",
   "license": "Apache-2.0",
   "repository": {
@@ -24,7 +24,7 @@
   ],
 
   "dependencies": {
-    "qdlist": "0.9.0",
+    "qdlist": "0.10.3",
     "qtimebase": "1.0.0"
   },
   "devDependencies": {
