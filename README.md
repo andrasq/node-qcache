@@ -102,6 +102,10 @@ remove the value from the cache.  Removed items read as undefined.
 
 remove expired elements from the cache to free the occupied storage space
 
+### keys( )
+
+return the currently tracked cache keys, including keys that may be expired or been deleted.
+
 
 LruCache
 ========
@@ -141,6 +145,10 @@ Missing keys and displaced values read as `undefined`.
 ### delete( key ), del
 
 remove the key from the cache.
+
+### keys( )
+
+return the currently tracked cache keys, including keys that may be expired or been deleted.
 
 
 MultiValueCache
@@ -182,10 +190,15 @@ test whether there are any values stored under key
 
 return the count of items stored under `key`
 
+### keys( )
+
+return the currently tracked cache keys, including keys that may be expired or been deleted.
+
 
 Change Log
 ----------
 
+- 0.8.0 - `keys` method on TtlCache, LruCache, MultiValueCache, test with newer `qnit`
 - 0.7.2 - faster LruCache
 - 0.7.1 - LruCache much faster rewrite, fix LruCache1 count
 - 0.6.2 - improve lrucache tests

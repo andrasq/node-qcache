@@ -119,6 +119,15 @@ module.exports = {
             },
         },
 
+        'keys': {
+            'should return cache keys': function(t) {
+                this.cache.set('a', 1);
+                this.cache.set('b', 2);
+                t.deepEqual(this.cache.keys(), ['a', 'b']);
+                t.done();
+            },
+        },
+
         'should track count': function(t) {
             var cache = new LruCache();
             t.equal(cache.count, 0);

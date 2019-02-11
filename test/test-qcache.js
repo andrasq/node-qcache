@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015,2018 Andras Radics
+ * Copyright (C) 2015,2018-2019 Andras Radics
  * Licensed under the Apache License, Version 2.0
  */
 
@@ -190,6 +190,14 @@ module.exports = {
                 t.equal(countAfter, 1);
                 t.done();
             }, 22);
+        },
+
+        'keys should return cache keys': function(t) {
+            var cache = new TtlCache();
+            cache.set('key1', 1);
+            cache.set('key22', 22);
+            t.deepEqual(cache.keys(), ['key1', 'key22']);
+            t.done();
         },
 
         'time 200k set/get calls': function(t) {
