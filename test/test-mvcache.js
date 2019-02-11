@@ -5,7 +5,7 @@
 
 'use strict';
 
-var MultiValueCache = require('../mvcache');
+var MultiValueCache = require('../').MultiValueCache;
 
 module.exports = {
     setUp: function(done) {
