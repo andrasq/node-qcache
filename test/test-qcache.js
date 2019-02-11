@@ -16,13 +16,13 @@ module.exports = {
 
     'TtlCache': {
         'index should export TtlCache': function(t) {
-            var qcache = require('../index');
+            var qcache = require('../');
             t.ok(new qcache() instanceof TtlCache);
             t.done();
         },
 
         'ttlcache should export TtlCache': function(t) {
-            var qcache = require('../ttlcache');
+            var qcache = require('../').TtlCache;
             t.ok(new qcache() instanceof TtlCache);
             t.done();
         },
