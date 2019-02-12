@@ -16,12 +16,7 @@
   "engines": {
     "node": "*"
   },
-  "keywords": [
-    "Andras",
-    "quick",
-    "cache",
-    "timeout"
-  ],
+  "keywords": [ "Andras", "quick", "cache", "ttl", "lru", "multi-value" ],
 
   "dependencies": {
     "qdlist": "0.10.3",
