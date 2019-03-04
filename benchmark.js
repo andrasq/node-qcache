@@ -10,12 +10,16 @@ var qcache = require('./');
 var node_cache = require('node-cache');
 var memory_cache = require('memory-cache');
 var lru_cache = require('lru-cache');
+var hashlru = require('hashlru');
+var quicklru = require('quick-lru');
 
 console.log("package versions:");
 console.log("  qcache %s", require('./package.json').version);
 console.log("  node-cache %s", require('node-cache/package.json').version);
 console.log("  memory-cache %s", require('memory-cache/package.json').version);
 console.log("  lru-cache %s", require('lru-cache/package.json').version);
+console.log("  hashlru %s", require('hashlru/package.json').version);
+console.log("  quick-lru %s", require('quick-lru/package.json').version);
 
 var nloops = 20;
 var nitems = 500;
@@ -99,6 +103,24 @@ qtimeit.bench({
             for (var i=0; i<nitems; i++) c.del(keys[i]);
         }
     },
+
+    'hashlru': function() {
+        c = hashlru(999999999);
+        for (var j=0; j<nloops; j++) {
+            for (var i=0; i<nitems; i++) c.set(keys[i], i);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var i=0; i<nitems; i++) c.remove(keys[i]);
+        }
+    },
+
+    'quick-lru': function() {
+        c = new quicklru({ maxSize: 999999999 });
+        for (var j=0; j<nloops; j++) {
+            for (var i=0; i<nitems; i++) c.set(keys[i], i);
+            for (var k=0; k<nreuse; k++) for (var i=0; i<nitems; i++) x = c.get(keys[i]);
+            for (var i=0; i<nitems; i++) c.delete(keys[i]);
+        }
+    },
 });
 
 console.log("");
@@ -122,6 +144,18 @@ qtimeit.bench({
         testCache(c);
     },
 
+    'hashlru 1%': function() {
+        c = hashlru(nitems * 100/101);
+        c.del = c.remove;
+        testCache(c);
+    },
+
+    'quick-lru 1%': function() {
+        c = new quicklru({ maxSize: nitems * 100/101 });
+        c.del = c.delete;
+        testCache(c);
+    },
+
     'qcache.LruCache 25%': function() {
         // this is the v1 but do not run, overwrite with v2
         c = new qcache.LruCache1({ capacity: nitems * .80 });
@@ -136,6 +170,18 @@ qtimeit.bench({
 
     'qcache.LruCache 25%': function() {
         c = new qcache.LruCache2({ capacity: nitems * .80 });
+        testCache(c);
+    },
+
+    'hashlru 25%': function() {
+        c = hashlru(nitems * .80);
+        c.del = c.remove;
+        testCache(c);
+    },
+
+    'quick-lru 25%': function() {
+        c = new quicklru({ maxSize: nitems * .80 });
+        c.del = c.delete;
         testCache(c);
     },
 });
