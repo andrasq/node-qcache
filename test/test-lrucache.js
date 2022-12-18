@@ -63,6 +63,14 @@ module.exports = {
                 t.done();
             },
 
+            'should store same value': function(t) {
+                this.cache.set('a', 1);
+                this.cache.set('a', 11);
+                t.equal(this.cache.get('a'), 11);
+                t.deepEqual(this.cache.keys(), ['a']);
+                t.done();
+            },
+
             'should displace oldest value': function(t) {
                 var cache = new LruCache({ capacity: 3 });
                 cache.set('a', 1);
@@ -70,12 +78,25 @@ module.exports = {
                 cache.set('c', 3);
                 cache.set('a', 11);
                 cache.set('d', 4);
-                if (cache.keyvals) t.equal(Object.keys(cache.keyvals).length, 3);       // v1
-                if (cache.nodemap) t.equal(Object.keys(cache.nodemap).length, 3);       // v2
+                function definedKeys(obj) { return Object.keys(obj).filter(function(k) { return !!obj[k] }) }
+                if (cache.keyvals) t.equal(definedKeys(cache.keyvals).length, 3);       // v1
+                if (cache.nodemap) t.equal(definedKeys(cache.nodemap).length, 3);       // v2
                 t.equal(cache.get('b'), undefined);
                 t.equal(cache.get('a'), 11);
                 t.equal(cache.get('c'), 3);
                 t.equal(cache.get('d'), 4);
+                t.done();
+            },
+
+            'should call delete when displacing': function(t) {
+                if (this.cache.nodemap) {
+                    this.cache.capacity = 1;
+                    this.cache.set('a', 1);
+                    var spy = t.spyOnce(this.cache, 'delete');
+                    this.cache.set('b', 2);
+                    t.ok(spy.called);
+                    t.equal(spy.args[0][0], 'a');
+                }
                 t.done();
             },
         },
@@ -122,6 +143,8 @@ module.exports = {
         'keys': {
             'should return cache keys': function(t) {
                 this.cache.set('a', 1);
+                this.cache.set('c', 3);
+                this.cache.delete('c');
                 this.cache.set('b', 2);
                 t.deepEqual(this.cache.keys(), ['a', 'b']);
                 t.done();
@@ -153,6 +176,34 @@ module.exports = {
             t.equal(cache.count, 0);
 
             t.done();
+        },
+
+        'gc': {
+            'should purge undefined objects from map': function(t) {
+                var cache = this.cache;
+                cache.set('a', 1);
+                cache.set('b', 2);
+                cache.delete('a');
+                cache.delete('b');
+                if (cache.nodemap) {
+                    t.deepStrictEqual(cache.nodemap, { a: undefined, b: undefined });
+                    cache.set('c', 3);
+                    cache.gc();
+                    cache.delete('c');
+                    t.deepStrictEqual(cache.nodemap, { c: undefined });
+                }
+                t.done();
+            },
+
+            'should be triggered automatically on delete': function(t) {
+                this.cache.set('a', 1);
+                this.cache.deleteCount = this.cache.gcDeleteLimit + 1;
+                this.cache.delete('a');
+                if (this.cache.nodemap) {
+                    t.deepStrictEqual(this.cache.nodemap, { }); // gc was run
+                }
+                t.done();
+            },
         },
     },
 
