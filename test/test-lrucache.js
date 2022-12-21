@@ -88,14 +88,15 @@ module.exports = {
                 t.done();
             },
 
-            'should call delete when displacing': function(t) {
+            'should delete head when displacing': function(t) {
                 if (this.cache.nodemap) {
-                    this.cache.capacity = 1;
+                    this.cache.capacity = 2;
                     this.cache.set('a', 1);
-                    var spy = t.spyOnce(this.cache, 'delete');
                     this.cache.set('b', 2);
-                    t.ok(spy.called);
-                    t.equal(spy.args[0][0], 'a');
+                    t.equal(this.cache.deleteCount, 0);
+                    this.cache.set('c', 3);
+                    t.equal(this.cache.deleteCount, 1);
+                    t.strictEqual(this.cache.get('a'), undefined);
                 }
                 t.done();
             },

@@ -1,6 +1,6 @@
 qcache
 ======
-[![Build Status](https://api.travis-ci.org/andrasq/node-qcache.svg?branch=master)](https://travis-ci.org/andrasq/node-qcache?branch=master)
+[![Build Status](https://api.travis-ci.com/github/andrasq/node-qcache.svg?branch=master)](https://travis-ci.com/github/andrasq/node-qcache?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/andrasq/node-qcache/badge.svg?branch=master)](https://coveralls.io/github/andrasq/node-qcache?branch=master)
 
 
@@ -198,6 +198,7 @@ return the currently tracked cache keys, including keys that may be expired or b
 Change Log
 ----------
 
+- 0.8.2 - faster insert/delete by more efficient list updates
 - 0.8.1 - avoid delete for much faster evictions, fix list breakage when re-inserting last node
 - 0.8.0 - `keys` method on TtlCache, LruCache, MultiValueCache, test with newer `qnit`
 - 0.7.2 - faster LruCache
