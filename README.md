@@ -198,7 +198,7 @@ return the currently tracked cache keys, including keys that may be expired or b
 Change Log
 ----------
 
-- 0.8.2 - faster insert/delete by more efficient list updates
+- 0.8.3 - faster insert/delete by more efficient list updates, return lru keys in sorted order
 - 0.8.1 - avoid delete for much faster evictions, fix list breakage when re-inserting last node
 - 0.8.0 - `keys` method on TtlCache, LruCache, MultiValueCache, test with newer `qnit`
 - 0.7.2 - faster LruCache

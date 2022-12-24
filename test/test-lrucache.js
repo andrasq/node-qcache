@@ -76,14 +76,20 @@ module.exports = {
                 cache.set('a', 1);
                 cache.set('b', 2);
                 cache.set('c', 3);
-                cache.set('a', 11);
+
+                // make middle item the newest
+                cache.set('b', 22);
+                t.deepEqual(cache.keys(), ['a', 'c', 'b']);
+                if (cache.keylist) t.equal(cache.keylist.next.value, 'a');
+                if (cache.keylist) t.equal(cache.keylist.prev.value, 'b');
+
+                // displace first item
                 cache.set('d', 4);
-                function definedKeys(obj) { return Object.keys(obj).filter(function(k) { return !!obj[k] }) }
-                if (cache.keyvals) t.equal(definedKeys(cache.keyvals).length, 3);       // v1
-                if (cache.nodemap) t.equal(definedKeys(cache.nodemap).length, 3);       // v2
-                t.equal(cache.get('b'), undefined);
-                t.equal(cache.get('a'), 11);
+                t.deepEqual(cache.keys(), ['c', 'b', 'd']);
+                if (cache.keylist) t.equal(cache.keylist.next.value, 'c');
+                if (cache.keylist) t.equal(cache.keylist.prev.value, 'd');
                 t.equal(cache.get('c'), 3);
+                t.equal(cache.get('b'), 22);
                 t.equal(cache.get('d'), 4);
                 t.done();
             },
